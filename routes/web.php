@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Category;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
@@ -16,13 +18,16 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
 |
 */
 
-Route::get('/', function () {
- $posts = Post::all();
+// Route::get('/', function () {
+//     return view('posts',  [
+//         'posts' => Post::all()
+//     ]);
+// });
 
-
-return view('posts',  [
-           'posts' => $posts
-]);
+Route::get('/', function() {
+    return view('posts', [
+        'posts' => Post::latest()->with(['category', 'user'])->get() // prevent n+1 problem
+    ]);
 });
 
 
@@ -53,4 +58,18 @@ Route::get('/posts/{post:slug}', function (Post $post){
         'post' => $post
     ]);
 
+});
+
+Route::get('/categories/{category:slug}', function (Category $category){
+
+return view('posts',  [
+           'posts' => $category ->posts->load(['category','user'])
+]);
+
+});
+
+Route::get('/authors/{user:username}', function (User $user) {
+    //dd($user);
+    return view('posts', ['posts' => $user->posts
+    ]);
 });
