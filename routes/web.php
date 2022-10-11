@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
@@ -24,11 +25,7 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
 //     ]);
 // });
 
-Route::get('/', function() {
-    return view('posts', [
-        'posts' => Post::latest()->with(['category', 'user'])->get() // prevent n+1 problem
-    ]);
-});
+Route::get('/', [PostController::class, 'index'])->name('home');
 
 
    // $document = YamlFrontMatter::parseFile(resource_path('posts/my-first-post.html'));
@@ -51,25 +48,19 @@ Route::get('/', function() {
 
 // });
 
-Route::get('/posts/{post:slug}', function (Post $post){
-    //$post =   Post::findOrFail($post);
+Route::get('/posts/{post:slug}', [PostController::class, 'show']);
 
-    return view('post', [
-        'post' => $post
-    ]);
+// Route::get('/categories/{category:slug}', function (Category $category){
+// return view('posts',  [
+//            'posts' => $category ->posts->load(['category','user']),
+//            'currentCategory' => $category,
+//            'categories' => Category::all()
+// ]);
 
-});
+// })->name('category');
 
-Route::get('/categories/{category:slug}', function (Category $category){
-
-return view('posts',  [
-           'posts' => $category ->posts->load(['category','user'])
-]);
-
-});
-
-Route::get('/authors/{user:username}', function (User $user) {
-    //dd($user);
-    return view('posts', ['posts' => $user->posts
-    ]);
-});
+// Route::get('/authors/{user:username}', function (User $user) {
+//     //dd($user);
+//     return view('posts.index', ['posts' => $user->posts
+//     ]);
+// });

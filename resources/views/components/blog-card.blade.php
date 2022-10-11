@@ -14,7 +14,8 @@
                                 </div>
 
                                 <div class="mt-4">
-                                    <h1 class="text-3xl">{{ $post->title}}
+                                    <h1 class="text-3xl">
+                                    <a href="/posts/{{$post->slug}}">{{ $post->title}}</a>
                                     </h1>
 
                                     <span class="mt-2 block text-gray-400 text-xs">
@@ -25,7 +26,7 @@
 
                             <div class="text-sm mt-4">
                                 <p>
-                                {{$post->excerpt}}
+                                {!! $post->excerpt !!}
                                 </p>
 
                                
@@ -35,8 +36,8 @@
                                 <div class="flex items-center text-sm">
                                     <img src="/images/lary-avatar.svg" alt="Lary avatar">
                                     <div class="ml-3">
-                                        <h5 class="font-bold">{{$post->user->name}}</h5>
-                                    </div>
+                                    <h5 class="font-bold"><a href="/authors/{{$post->user->username}}">{{$post->user->name}}</a></h5>
+                                </div>
                                 </div>
 
                                 <div>
